@@ -1,24 +1,26 @@
-import {
-  Presentation, CreatePresentation, changePresentationName
-} from "../Presentation";
+import { Presentation, changePresentationName, CreatePresentation, CreateSlide, Slide, BackgroundSlide, changeSlideBackground,  } from "./Presentation.ts";
 
 describe("CreatePresentation", () => {
     it("Create pres", () => {
-        expect(CreatePresentation()).toEqual({ name: "New Presentation", listSlides: [] });
+        expect(CreatePresentation()).toEqual({ title: "New Presentation", slides: [] });
     });
 });
 
 describe("ChangeName", () => {
-    const pres: Presentation = CreatePresentation();
+    const pres = CreatePresentation();
     it("Rename pres", () => {
-        expect(changePresentationName("Ne presentation", pres)).toEqual({
-            name: "Ne presentation",
-            listSlides: [],
+        expect(changePresentationName(pres, "Super New Presentation")).toEqual({
+            title: "Super New Presentation",
+            slides: [],
         });
     });
 
     it("not renames to empty name", () => {
-        expect(changePresentationName(" ", pres)).toEqual(pres);
-        expect(changePresentationName("", pres)).toEqual(pres);
+        expect(changePresentationName(pres, " ",)).toEqual(pres);
+        expect(changePresentationName(pres, "")).toEqual(pres);
     });
+
 });
+
+
+
