@@ -1,18 +1,16 @@
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
+export type Id = string;
+
 export type Presentation = {
   title: string;
-  slides: Slide[];
+  slides: SlideType[];
 };
 
-const CreatePresentation = (): Presentation => ({
-  title: "New Presentation",
-  slides: [],
-});
 
-type Color = {
-  type: "solid";
-  color: string;
-};
+// const CreatePresentation = (): Presentation => ({
+//   title: "New Presentation",
+//   slides: [],
+// });
 
 type BackgroundImage = {
   type: "image";
@@ -26,37 +24,21 @@ type BackgroundColor = {
 
 export type BackgroundSlide = BackgroundImage | BackgroundColor;
 
-export type SlideType = {
-  id: string;
-  elements: ElementType[];
-  background: BackgroundSlide;
-};
-
-const CreateSlide = (): SlideType => ({
-  id: uuidv4(),
-  elements: [],
-  background: { type: "color", color: "#000000" },
-});
-
-type SlideElem = {
-  id: string;
+export type SlideElem = {
+  id: Id;
   pos: {
     x: number;
     y: number;
   };
   size: {
     width: number;
-    heigth: number;
+    height: number;
   };
 };
 
-type SlideCollection = SlideType[];
+export type ElementType = TextElement | ImageElement;
 
-export type Selection = {
-  selectionObjectId: string;
-};
-
-export type Text = SlideElem & {
+export type TextElement = SlideElem & {
   type: "text";
   text: string;
   fontFamily: string;
@@ -66,87 +48,98 @@ export type Text = SlideElem & {
 
 export type ImageElement = SlideElem & {
   type: "image";
-  src: string;
+  url: string;
 };
 
-type ElementType = TextElement | ImageElement;
-
-const changePresentationName = (presentation: Presentation, newTitle: string): Presentation => {
-  if (newTitle.trim() == "") {
-    return { ...presentation, title: "New Presentation" };
-  }
-  return { ...presentation, title: newTitle };
+export type SlideType = {
+  id: string;
+  elements: ElementType[];
+  background: string;
 };
 
-const addSlide = (slideCollection: SlideCollection, newSlide: SlideType): SlideCollection => {
-  return [...slideCollection, newSlide];
+// const CreateSlide = (): SlideType => ({
+//   id: uuidv4(),
+//   elements: [],
+//   background: "ffffff",
+// });
+
+
+
+export type SlideCollection = SlideType[];
+
+export type Selection = {
+  selectionObjectId: string;
 };
 
-const removeSlide = (slideCollection: SlideCollection, slideId: string): SlideCollection => {
-  return slideCollection.filter((slide) => slide.id !== slideId);
-};
+export enum FontFormatting {
+  bold,
+  italic,
+  underlined,
+}
+// const addSlide = (slideCollection: SlideCollection, newSlide: SlideType): SlideCollection => {
+//   return [...slideCollection, newSlide];
+// };
 
-const changeSlidePosition = (
-  slideCollection: SlideCollection,
-  slideId: string,
-  newPosition: number,
-): SlideCollection => {
-  return slideCollection.map((slide) => (slide.id === slideId ? { ...slide, position: newPosition } : slide));
-};
+// const removeSlide = (slideCollection: SlideCollection, slideId: string): SlideCollection => {
+//   return slideCollection.filter((slide) => slide.id !== slideId);
+// };
 
-const addElementToSlide = (slide: SlideType, newElement: Element): SlideType => {
-  return { ...slide, elements: [...slide.elements, newElement] };
-};
+// const changeSlidePosition = (
+//   slideCollection: SlideCollection,
+//   slideId: string,
+//   newPosition: number,
+// ): SlideCollection => {
+//   return slideCollection.map((slide) => (slide.id === slideId ? { ...slide, position: newPosition } : slide));
+// };
 
-const removeElementFromSlide = (slide: SlideType, elementId: string): SlideType => {
-  return { ...slide, elements: slide.elements.filter((element) => element.id !== elementId) };
-};
+// const addElementToSlide = (slide: SlideType, newElement: ElementType): SlideType => {
+//   return { ...slide, elements: [...slide.elements, newElement] };
+// };
 
-const changeElementPosition = (slide: SlideType, elementId: string, newPosition: number): SlideType => {
-  return {
-    ...slide,
-    elements: slide.elements.map((element) =>
-      element.id === elementId ? { ...element, position: newPosition } : element,
-    ),
-  };
-};
+// const removeElementFromSlide = (slide: SlideType, elementId: string): SlideType => {
+//   return { ...slide, elements: slide.elements.filter((element) => element.id !== elementId) };
+// };
 
-const changeElementSize = (slide: SlideType, elementId: string, newSize: number): SlideType => {
-  return {
-    ...slide,
-    elements: slide.elements.map((element) => (element.id === elementId ? { ...element, size: newSize } : element)),
-  };
-};
+// const changeElementPosition = (slide: SlideType, elementId: string, newPosition: number): SlideType => {
+//   return {
+//     ...slide,
+//     elements: slide.elements.map((element) =>
+//       element.id === elementId ? { ...element, position: newPosition } : element,
+//     ),
+//   };
+// };
 
-const changeTextContent = (slide: SlideType, textElementId: string, newText: string): SlideType => {
-  return {
-    ...slide,
-    elements: slide.elements.map((element) =>
-      element.id === textElementId ? { ...element, content: newText } : element,
-    ),
-  };
-};
+// const changeElementSize = (slide: SlideType, elementId: string, newSize: {width: number, height: number}): SlideType => {
+//   return {
+//     ...slide,
+//     elements: slide.elements.map((element) => (element.id === elementId ? { ...element, size: newSize } : element)),
+//   };
+// };
 
-const changeTextSize = (slide: SlideType, textElementId: string, newSize: number): SlideType => {
-  return {
-    ...slide,
-    elements: slide.elements.map((element) =>
-      element.id === textElementId ? { ...element, textSize: newSize } : element,
-    ),
-  };
-};
+// const changeTextContent = (slide: SlideType, textElementId: string, newText: string): SlideType => {
+//   return {
+//     ...slide,
+//     elements: slide.elements.map((element) =>
+//       element.id === textElementId ? { ...element, content: newText } : element,
+//     ),
+//   };
+// };
 
-const changeFontFamily = (slide: SlideType, textElementId: string, newFontFamily: string): SlideType => {
-  return {
-    ...slide,
-    elements: slide.elements.map((element) =>
-      element.id === textElementId ? { ...element, fontFamily: newFontFamily } : element,
-    ),
-  };
-};
+// const changeTextSize = (slide: SlideType, textElementId: string, newSize: number): SlideType => {
+//   return {
+//     ...slide,
+//     elements: slide.elements.map((element) =>
+//       element.id === textElementId ? { ...element, textSize: newSize } : element,
+//     ),
+//   };
+// };
 
-const changeSlideBackground = (slide: SlideType, newBackground: BackgroundSlide): SlideType => {
-  return { ...slide, background: newBackground };
-};
+// const changeFontFamily = (slide: SlideType, textElementId: string, newFontFamily: string): SlideType => {
+//   return {
+//     ...slide,
+//     elements: slide.elements.map((element) =>
+//       element.id === textElementId ? { ...element, fontFamily: newFontFamily } : element,
+//     ),
+//   };
+// };
 
-export { changePresentationName, changeSlidePosition, CreatePresentation, CreateSlide, changeSlideBackground };

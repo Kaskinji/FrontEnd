@@ -1,11 +1,33 @@
-import { Workspace } from "./view/Workspace";
+import { useEffect } from 'react';
+import { SlideList } from "./view/SlideList/SlideList";
+import { Toolbar } from "./view/Toolbar/Toolbar";
+import { Workspace } from "./view/Workspace/Workspace.tsx";
+import styles from "./App.module.css";
+import { EditorType } from "./entities/SelectionType.ts";
 
-function App() {
-  return (
-    <>
-      <Workspace slide={} />
-    </>
-  );
+type AppProps = {
+  editor: EditorType,
 }
 
-export default App;
+function App({editor}: AppProps) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+        document.body.style.overflow = "scroll"
+    };
+  }, []);
+  
+  const selectedObjectIndex = editor.presentation.slides.findIndex(slide => slide.id == editor.selection.selectedObjectId)
+  
+  return (
+    <>
+      <Toolbar title={editor.presentation.title} />
+      <div className={styles.container}>
+        <SlideList slideList={editor.presentation.slides} selection={editor.selection} />
+        <Workspace slide={editor.presentation.slides[selectedObjectIndex]} />
+      </div>
+    </>
+  )
+}
+
+export default App

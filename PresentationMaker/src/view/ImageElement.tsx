@@ -1,21 +1,21 @@
 import { CSSProperties } from "react";
-import { ImageElement } from "../entities/Presentation";
+import { ImageElement } from "../entities/Presentation.ts";
 
-type ImageObjectProps = {
-  imageElement: ImageElement;
+type ImageElementProps = {
+  imageElement: ImageElement
   scale?: number;
 };
 
-function ImageObject({ imageElement, scale = 1 }: ImageObjectProps) {
+function ImageElementFunc({ imageElement, scale = 1 }: ImageElementProps) {
   const imageObjectStyles: CSSProperties = {
     position: "absolute",
-    top: `${imageElement.pos.y * scale}px`,
-    left: `${imageElement.pos.x * scale}px`,
+    top: `${imageElement.pos.x * scale}px`,
+    left: `${imageElement.pos.y * scale}px`,
     width: `${imageElement.size.width * scale}px`,
-    height: `${imageObject.size.heigth * scale}px`,
+    height: `${imageElement.size.height * scale}px`,
   };
 
-  return <img style={imageObjectStyles} src={`data:image/jpeg;base64, ${imageObject.url}`} />;
+  return <img style={imageObjectStyles} src={`data:image/jpeg;base64, ${imageElement.url}`} />;
 }
 
-export { ImageObject };
+export { ImageElementFunc };

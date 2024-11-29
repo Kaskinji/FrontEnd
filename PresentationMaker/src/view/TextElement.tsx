@@ -1,23 +1,22 @@
-import { CSSProperties } from "react";
-import { Text } from "../entities/Presentation";
+import { CSSProperties } from "react"
+import { TextElement } from "../entities/Presentation.ts";
 
 type TextElementProps = {
-  textElement: Text;
+  textElement: TextElement;
   scale?: number;
 };
 
-function TextElement({ textElement, scale = 1 }: TextElementProps) {
-  const imageObjectStyles: CSSProperties = {
+function TextObject({ textElement, scale = 1 }: TextElementProps) {
+  const textObjectStyles: CSSProperties = {
     position: "absolute",
     top: `${textElement.pos.y * scale}px`,
     left: `${textElement.pos.x * scale}px`,
     width: `${textElement.size.width * scale}px`,
     height: `${textElement.size.heigth * scale}px`,
-    fontFamily: textElement.fontFamily,
-    fontSize: `${textElement.fontSize}px`,
+    fontSize: `${textElement.fontSize * scale}px`,
   };
 
-  return <p style={imageObjectStyles}>{textElement.text}</p>;
+  return <p style={textObjectStyles}>{textElement.text}</p>;
 }
 
-export { TextElement };
+export { TextObject };
