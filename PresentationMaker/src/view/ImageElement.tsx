@@ -6,6 +6,7 @@ type ImageElementProps = {
   imageElement: ImageElement;
   scale?: number;
 };
+//2
 
 function ImageObject({ imageElement, scale = 1 }: ImageElementProps) {
   const { dragging, onDragStart, onDragEnd } = useDraggable({
