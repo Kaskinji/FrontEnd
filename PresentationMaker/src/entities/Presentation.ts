@@ -6,24 +6,6 @@ export type Presentation = {
   slides: SlideType[];
 };
 
-
-// const CreatePresentation = (): Presentation => ({
-//   title: "New Presentation",
-//   slides: [],
-// });
-
-type BackgroundImage = {
-  type: "image";
-  url: string;
-};
-
-type BackgroundColor = {
-  type: "color";
-  color: string;
-};
-
-export type BackgroundSlide = BackgroundImage | BackgroundColor;
-
 export type SlideElem = {
   id: Id;
   pos: {
@@ -57,12 +39,6 @@ export type SlideType = {
   background: string;
 };
 
-// const CreateSlide = (): SlideType => ({
-//   id: uuidv4(),
-//   elements: [],
-//   background: "ffffff",
-// });
-
 
 
 export type SlideCollection = SlideType[];
@@ -76,6 +52,21 @@ export enum FontFormatting {
   italic,
   underlined,
 }
+
+
+// const CreatePresentation = (): Presentation => ({
+//   title: "New Presentation",
+//   slides: [],
+// });
+
+
+// const CreateSlide = (): SlideType => ({
+//   id: uuidv4(),
+//   elements: [],
+//   background: "ffffff",
+// });
+
+
 // const addSlide = (slideCollection: SlideCollection, newSlide: SlideType): SlideCollection => {
 //   return [...slideCollection, newSlide];
 // };

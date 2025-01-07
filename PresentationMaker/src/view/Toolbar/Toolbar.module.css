@@ -1,14 +1,63 @@
-.toolbar {
-  width: 100vw;
-  height: var(--topPanelHeight);
-  background-color: #00bfff50;
-  padding: 10px;
+.topPanel {
+    width: 100vw;
+    height: var(--topPanelHeight);
+    background-color: #52522b;
+    padding: 10px;
 }
 
 .title {
-  background-color: transparent;
-  border: none;
-  font-size: 16px;
-  width: 250px;
-  margin: 0 0 10px 5px;
+    background-color: transparent;
+    border: none;
+    position: relative;
+    height: var(--titleHeight);
+    font-size: 46px;
+    width: 500px;
+    margin: 0 0 10px 500px;
+}
+
+.container_buttons {
+    display: flex;
+    justify-content:flex-end;
+    align-items: center;
+    height: calc(var(--topPanelHeight) - var(--titleHeight));
+}
+
+.container_button_editBackground {
+    position:fixed;
+    display:inline-flex;
+    flex-direction:row;
+}
+
+.color_picker {
+    display: flex;
+    position: relative;
+    top: calc(100% + 10px);
+}
+
+.color_picker::before, .color_picker::after {
+    display: none;
+    content: "";
+    position:relative;
+    height: 20px;
+    right: 35%;
+    border: 10px solid transparent;
+}
+
+.color_picker::before {
+    top: -40px;
+    border-bottom: 10px solid #00ff00;
+}
+
+.color_picker::after {
+    top: -38px;
+    border-bottom: 10px solid #ffffff;
+}
+
+.button {
+    margin: 10 5px;
+}
+
+.button_with_dropdown {
+    position: relative;
+    
 }

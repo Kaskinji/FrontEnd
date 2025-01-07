@@ -2,11 +2,8 @@ import { EditorType } from "../../entities/SelectionType.ts";
 
 
 function changeSlideBackground(editor: EditorType, newBackground: string): EditorType {
-    if (!editor.selection) {
-        return editor
-    }
 
-    const editBackgroundSlideId = editor.selection.selectedObjectId
+    const editBackgroundSlideId = editor.slideSelection.selectedSlideId
     const editBackgroundSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == editBackgroundSlideId)
 
     const newSlides = [...editor.presentation.slides]

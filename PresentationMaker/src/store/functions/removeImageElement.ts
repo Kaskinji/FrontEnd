@@ -2,7 +2,7 @@ import { EditorType } from "../../entities/SelectionType"
 
 
 function removeImage(editor: EditorType): EditorType {
-    const slideId = editor.selection.selectedObjectId
+    const slideId = editor.slideSelection.selectedSlideId
     const slideIndex = editor.presentation.slides.findIndex(slide => slide.id == slideId)
 
     const elementIndex = editor.presentation.slides[slideIndex].elements.findIndex(element => element.type == "image")

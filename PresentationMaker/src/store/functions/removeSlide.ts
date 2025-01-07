@@ -1,7 +1,7 @@
-import { EditorType } from "../../entities/SelectionType"
+import { EditorType, SelectionType } from "../../entities/SelectionType"
 
 function removeSlide(editor: EditorType): EditorType {
-    const removeSlideId = editor.selection.selectedObjectId
+    const removeSlideId = editor.slideSelection.selectedSlideId
     const removeSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == removeSlideId)
 
     const newSlides = editor.presentation.slides.filter(slide => slide.id != removeSlideId)
@@ -17,9 +17,14 @@ function removeSlide(editor: EditorType): EditorType {
             ...editor.presentation,
             slides: newSlides,
         },
-        selection: {
-            selectedObjectId: newSelectedSlideId,
+        slideSelection: {
+            type: SelectionType.Slide,
+            selectedSlideId: newSelectedSlideId,
         },
+        objectSelection: {
+            type: SelectionType.Object,
+            selectedObjectId: ""
+        }
     }
 }
 

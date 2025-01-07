@@ -1,39 +1,53 @@
 import { CSSProperties } from "react";
-import { TextObject } from "../TextElement.tsx";
-import { ImageElementFunc } from "../ImageElement.tsx";
 import { SlideType } from "../../entities/Presentation.ts";
-import styles from '../Slide/Slide.module.css';
-
-const SLIDE_WIDTH = 1100;
-const SLIDE_HEIGHT = 700;
+import { TextObject } from "../TextElement.tsx";
+import { ImageObject } from "../ImageElement.tsx";
+import styles from "./Slide.module.css";
 
 type SlideProps = {
   isSelected: boolean;
   scale?: number;
   slide: SlideType;
-  className: string;
 };
 
-function Slide({ isSelected, scale = 1, slide, className }: SlideProps) {
+function Slide({ slide, scale = 1, isSelected }: SlideProps) {
   const slideStyles: CSSProperties = {
-    width: `${SLIDE_WIDTH * scale}px`,
-    height: `${SLIDE_HEIGHT * scale}px`,
+    width: `${1300 * scale}px`,
+    height: `${800 * scale}px`,
+    background: slide.background || "#ffffff",
+    backgroundImage: slide.background ? `url(${slide.background})` : undefined,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    border: isSelected ? "2px solid #7c8ad0" : "3px solid transparent",
+    position: "relative",
+    overflow: "hidden",
   };
 
-  if (isSelected) {
-    slideStyles.border = "3px solid #0b57d0";
-  }
-
   return (
-    <div style={slideStyles} className={styles.slide + ' ' + className}>
+    <div style={slideStyles} className={styles.slideStyles}>
       {slide.elements.map((slideElement) => {
         switch (slideElement.type) {
           case "text":
-            return <TextObject key={slideElement.id} textElement={slideElement} scale={scale} />;
+            return (
+              <TextObject
+                key={slideElement.id}
+                textElement={slideElement}
+                isSelected={isSelected}
+                scale={scale}
+              />
+            );
           case "image":
-            return <ImageElementFunc key={slideElement.id} imageElement={slideElement} scale={scale} />;
+            return (
+              <ImageObject
+                key={slideElement.id}
+                imageElement={slideElement}
+                scale={scale}
+                
+              />
+            );
           default:
-            throw new Error(`Unknown slide type`);
+            return null;
         }
       })}
     </div>

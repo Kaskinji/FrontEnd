@@ -3,9 +3,8 @@ import { EditorType } from "../../entities/SelectionType"
 
 function addImage(editor: EditorType, newImage: ImageElement): EditorType {
     console.log("editor", editor)
-
-    const addTextSlideId = editor.selection.selectedObjectId
-    const addTextSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == addTextSlideId)
+    const addImageSlideId = editor.slideSelection.selectedSlideId
+    const addTextSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == addImageSlideId)
 
     const newSlides = [...editor.presentation.slides]
     newSlides[addTextSlideIndex] = {...editor.presentation.slides[addTextSlideIndex], 
