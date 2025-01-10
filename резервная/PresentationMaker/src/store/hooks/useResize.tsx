@@ -1,69 +1,49 @@
 import { useState, useEffect } from "react";
 
-type ResizeHandle =
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right"
-  | "top"
-  | "left"
-  | "right"
-  | "bottom";
+type ResizeHandle = "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top" | "left" | "right" | "bottom";
 
 type UseResizableProps = {
   initialSize: { width: number; height: number };
-  initialPosition: { x: number; y: number };
-  onResize: (newSize: { width: number; height: number; x: number; y: number }) => void;
+  onResize: (newSize: { width: number; height: number }) => void;
   onResizeEnd?: () => void;
 };
 
-export function useResizable({
-  initialSize,
-  initialPosition,
-  onResize,
-  onResizeEnd,
-}: UseResizableProps) {
+export function useResizable({ initialSize, onResize, onResizeEnd }: UseResizableProps) {
   const [isResizing, setIsResizing] = useState(false);
   const [resizeHandle, setResizeHandle] = useState<ResizeHandle | null>(null);
   const [size, setSize] = useState(initialSize);
-  const [position, setPosition] = useState(initialPosition);
 
+  // Сброс размера при изменении initialSize
   useEffect(() => {
     setSize(initialSize);
-    setPosition(initialPosition);
-  }, [initialSize, initialPosition]);
+  }, [initialSize]);
 
   useEffect(() => {
     function onMouseMove(e: MouseEvent) {
       if (!isResizing || !resizeHandle) return;
 
-      let { width, height } = size;
-      let { x, y } = position;
+      let newWidth = size.width;
+      let newHeight = size.height;
 
       if (resizeHandle.includes("right")) {
-        width += e.movementX;
+        newWidth += e.movementX;
       }
       if (resizeHandle.includes("left")) {
-        width -= e.movementX;
-        x += e.movementX;
+        newWidth += e.movementX;
       }
       if (resizeHandle.includes("bottom")) {
-        height += e.movementY;
+        newHeight += e.movementY;
       }
       if (resizeHandle.includes("top")) {
-        height -= e.movementY;
-        y += e.movementY;
+        newHeight += e.movementY;
       }
 
       const newSize = {
-        width: Math.max(20, width),
-        height: Math.max(20, height),
-        x,
-        y,
+        width: Math.max(20, newWidth),
+        height: Math.max(20, newHeight),
       };
 
-      setSize({ width: newSize.width, height: newSize.height });
-      setPosition({ x: newSize.x, y: newSize.y });
+      setSize(newSize);
       onResize(newSize);
     }
 
@@ -84,7 +64,7 @@ export function useResizable({
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
     };
-  }, [isResizing, resizeHandle, size, position, onResize, onResizeEnd]);
+  }, [isResizing, resizeHandle, size, onResize, onResizeEnd]);
 
   function onResizeStart(handle: ResizeHandle) {
     setIsResizing(true);
@@ -93,7 +73,6 @@ export function useResizable({
 
   return {
     size,
-    position,
     isResizing,
     onResizeStart,
   };

@@ -1,0 +1,9 @@
+.slideList {
+    overflow:scroll;
+    margin-top: 10px;
+}
+
+.item {
+    margin: 10px;
+    border-radius: 10px;
+}

@@ -1,11 +1,11 @@
-import { EditorType } from "../../entities/SelectionType";
+import { EditorType } from "../../entities/SelectionType"
 
 
-function removeText(editor: EditorType): EditorType {
+function removeImage(editor: EditorType): EditorType {
     const slideId = editor.slideSelection.selectedSlideId
     const slideIndex = editor.presentation.slides.findIndex(slide => slide.id == slideId)
 
-    const elementIndex = editor.presentation.slides[slideIndex].elements.findIndex(element => element.type == "text")
+    const elementIndex = editor.presentation.slides[slideIndex].elements.findIndex(element => element.type == "image")
 
     const newSlides = [...editor.presentation.slides]
     newSlides[slideIndex].elements.splice(elementIndex, 1)
@@ -21,5 +21,5 @@ function removeText(editor: EditorType): EditorType {
 }
 
 export {
-    removeText,
+    removeImage,
 }

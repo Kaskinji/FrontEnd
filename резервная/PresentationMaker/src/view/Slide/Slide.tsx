@@ -27,6 +27,11 @@ function Slide({ slide, scale = 1, isSelected }: SlideProps) {
   return (
     <div style={slideStyles} className={styles.slideStyles}>
       {slide.elements.map((slideElement) => {
+        if (!slideElement || !slideElement.type) {
+          console.error("Invalid slide element", slideElement);
+          return null;
+        }
+
         switch (slideElement.type) {
           case "text":
             return (
@@ -45,6 +50,9 @@ function Slide({ slide, scale = 1, isSelected }: SlideProps) {
                 scale={scale}
               />
             );
+          default:
+            console.warn("Unknown element type", slideElement.type);
+            return null;
         }
       })}
 
