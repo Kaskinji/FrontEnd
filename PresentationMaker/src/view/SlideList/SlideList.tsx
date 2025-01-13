@@ -1,17 +1,19 @@
 import { SlideType } from "../../entities/Presentation.ts";
-import { SelectionSlide, SelectionType } from "../../entities/SelectionType.ts";
+import { SelectionType } from "../../entities/SelectionType.ts";
 import { Slide } from "../Slide/Slide.tsx";
 import styles from "./SlideList.module.css";
-import { setSelectionSlide } from "../../store/functions/SetSelectionSlide.ts";
 import { dispatch } from "../../store/editor.ts";
 import { useDraggableList } from "../../store/hooks/useDraggableList.tsx";
+import { useAppSelector } from "../../store/hooks/useAppSelector.ts";
+import { useActions } from "../../store/hooks/useActions.ts";
 
-type SlideListProps = {
-  slideList: SlideType[];
-  selection: SelectionSlide;
-};
 
-function SlideList({ slideList, selection }: SlideListProps) {
+function SlideList() {
+
+  const slideList = useAppSelector(editor => editor.presentation.slides);
+  const editor = useAppSelector(editor => editor)
+  const {setSelectionSlide} = useActions()
+
   const { onDragStart, onDragOver, onDrop } = useDraggableList<SlideType>({
     items: slideList,
     onReorder: (newOrder) => {
@@ -26,8 +28,10 @@ function SlideList({ slideList, selection }: SlideListProps) {
   });
 
   function onSlideClick(slideId: string) {
-    dispatch(setSelectionSlide, { selectedSlideId: slideId, type: SelectionType.Slide });
+    setSelectionSlide({ selectedSlideId: slideId, type: SelectionType.Slide });
+    console.log(slideId)
   }
+
 
   return (
     <div className={styles.slideList}>
@@ -43,7 +47,7 @@ function SlideList({ slideList, selection }: SlideListProps) {
           <Slide
             slide={slide}
             scale={0.3} // Масштаб для превьюшки
-            isSelected={slide.id === selection.selectedSlideId}
+            isSelected={slide.id === editor.slideSelection.selectedSlideId}
           />
         </div>
       ))}

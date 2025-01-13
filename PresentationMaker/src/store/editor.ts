@@ -1,6 +1,7 @@
 import { editor } from './data.ts';
 import { EditorType } from '../entities/SelectionType.ts';
 import { SlideType } from '../entities/Presentation.ts';
+import { saveToLocalStorage, loadFromLocalStorage } from './localStorageHelper.ts';
 
 type Handler = () => void;
 type ModifyFn<T = any> = (editor: EditorType, payload: T) => EditorType;
@@ -14,7 +15,13 @@ function getEditor() {
 }
 
 function setEditor(newEditor: EditorType) {
-    _editor = { ...newEditor }; // Создаем новый объект
+    _editor = { ...newEditor };
+    saveToLocalStorage(_editor); // Сохраняем состояние после изменений
+}
+
+export function initializeEditor(): EditorType {
+    const savedEditor = loadFromLocalStorage();
+    return savedEditor || editor; // Возвращаем сохранённое состояние или дефолтное
 }
 
 function updateSlides(editor: EditorType, updater: (slide: SlideType) => SlideType): EditorType {

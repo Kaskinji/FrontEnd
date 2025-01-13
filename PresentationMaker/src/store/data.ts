@@ -18,10 +18,10 @@ const slide1: SlideType = {
       pos: { x: 10, y: 10 },
       size: { width: 1, height: 100 },
       type: "text",
-      text: "Прив!",
+      text: "Привет!",
       fontFamily: "Roboto",
       fontSize: TextObject.fontSize,
-      fontColor: "#000",
+      fontColor: "000" 
     },
   ],
   background: "#ffffff",
@@ -59,7 +59,6 @@ const editor: EditorType = {
   objectSelection: {
     type: SelectionType.Object,
     selectedObjectId: ''
-
   }
 };
 

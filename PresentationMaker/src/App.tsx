@@ -1,33 +1,50 @@
-import { useEffect } from 'react';
-import { SlideList } from "./view/SlideList/SlideList";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Toolbar } from "./view/Toolbar/Toolbar";
-import { Workspace } from "./view/Workspace/Workspace.tsx";
+import { SlideList } from "./view/SlideList/SlideList";
+import { Workspace } from "./view/Workspace/Workspace";
 import styles from "./App.module.css";
-import { EditorType } from "./entities/SelectionType.ts";
+import { HistoryType } from "./store/ExtraFunctions/History";
+import { HistoryContext } from "./store/hooks/HistoryContext";
+import { Player } from "./store/ExtraFunctions/Player";
 
 type AppProps = {
-  editor: EditorType,
-}
+  history: HistoryType;
+};
 
-function App({editor}: AppProps) {
+function App({ history }: AppProps) {
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
-        document.body.style.overflow = "scroll"
+      document.body.style.overflow = "scroll";
     };
   }, []);
-  
-  const selectedObjectIndex = editor.presentation.slides.findIndex(slide => slide.id == editor.slideSelection.selectedSlideId)
-  
+
   return (
-    <>
-      <Toolbar title={editor.presentation.title} />
-      <div className={styles.container}>
-        <SlideList slideList={editor.presentation.slides} selection={editor.slideSelection} />
-        <Workspace slide={editor.presentation.slides[selectedObjectIndex]} />
-      </div>
-    </>
-  )
+    <HistoryContext.Provider value={history}>
+      <Router>
+        <div>
+          <Routes>
+            {/* Редактор */}
+            <Route
+              path="/"
+              element={
+                <div>
+                  <Toolbar />
+                  <div className={styles.container}>
+                    <SlideList />
+                    <Workspace />
+                  </div>
+                </div>
+              }
+            />
+            {/* Плеер */}
+            <Route path="/player" element={<Player />} />
+          </Routes>
+        </div>
+      </Router>
+    </HistoryContext.Provider>
+  );
 }
 
-export default App
+export default App;

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { CSSProperties } from "react";
-import { SlideType, TextElement, ImageElement } from "../../entities/Presentation.ts";
+import { TextElement} from "../../entities/Presentation.ts";
 import styles from "./Workspace.module.css";
-import { setSelectionObject } from "../../store/functions/SetSelectionObject.ts";
 import { dispatch, updateElementPosition } from "../../store/editor.ts";
+import { useAppSelector } from "../../store/hooks/useAppSelector.ts";
+
 
 type ResizeHandle =
   | "top-left"
@@ -15,15 +16,15 @@ type ResizeHandle =
   | "bottom-left"
   | "left";
 
-type WorkspaceProps = {
-  slide: SlideType;
-};
-
 type ElementResizeState = {
   [elementId: string]: { width: number; height: number; x: number; y: number };
 };
 
-function Workspace({ slide }: WorkspaceProps) {
+function Workspace() {
+
+  const editor = useAppSelector(editor => editor);
+  const selectedObjectIndex = editor.presentation.slides.findIndex(slide => slide.id == editor.slideSelection.selectedSlideId);
+  const selectedSlide = editor.presentation.slides[selectedObjectIndex];
   const [resizeStates, setResizeStates] = useState<ElementResizeState>({});
   const [activeAction, setActiveAction] = useState<{
     elementId: string;
@@ -38,7 +39,7 @@ function Workspace({ slide }: WorkspaceProps) {
     e.stopPropagation();
     setActiveAction({ elementId, handle });
 
-    const element = slide.elements.find((el) => el.id === elementId);
+    const element = selectedSlide.elements.find((el) => el.id === elementId);
     if (!element) return;
 
     setResizeStates((prev) => ({
@@ -51,11 +52,10 @@ function Workspace({ slide }: WorkspaceProps) {
     if (!activeAction) return;
 
     const { elementId, handle } = activeAction;
-    const element = slide.elements.find((el) => el.id === elementId);
+    const element = selectedSlide.elements.find((el) => el.id === elementId);
     if (!element) return;
 
     const current = resizeStates[elementId];
-    if (!current) return;
 
     let newWidth = current.width;
     let newHeight = current.height;
@@ -103,7 +103,7 @@ function Workspace({ slide }: WorkspaceProps) {
     if (!newState) return;
 
     dispatch(updateElementPosition, {
-      slideId: slide.id,
+      slideId: selectedSlide.id,
       elementId,
       newPos: { x: newState.x, y: newState.y },
       size: { width: newState.width, height: newState.height },
@@ -143,15 +143,15 @@ function Workspace({ slide }: WorkspaceProps) {
         width: "1300px",
         height: "800px",
         overflow: "hidden",
-        background: slide.background || "#ffffff",
-        backgroundImage: slide.background
-          ? `url(${slide.background})`
+        background: selectedSlide.background || "#ffffff",
+        backgroundImage: selectedSlide.background
+          ? `url(${selectedSlide.background})`
           : undefined,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
       }}
     >
-      {slide.elements.map((element) => {
+      {selectedSlide.elements.map((element) => {
         const current = resizeStates[element.id] || {
           width: element.size.width,
           height: element.size.height,

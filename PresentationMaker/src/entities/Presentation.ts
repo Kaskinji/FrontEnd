@@ -1,4 +1,4 @@
-// import { v4 as uuidv4 } from "uuid";
+import { v4 as uuid } from "uuid";
 export type Id = string;
 
 export type Presentation = {
@@ -39,35 +39,75 @@ export type SlideType = {
   background: string;
 };
 
-export type SlideCollection = SlideType[];
-
-export type Selection = {
-  selectionObjectId: string;
-};
-
 export enum FontFormatting {
   bold,
   italic,
   underlined,
 }
 
+ export const CreatePresentation = (): Presentation => ({
+   title: "New Presentation",
+   slides: [],
+ });
 
-// const CreatePresentation = (): Presentation => ({
-//   title: "New Presentation",
-//   slides: [],
-// });
+ export const EditName = (newName: string, pres: Presentation) : Presentation => {
+  if (newName.trim() == "") {
+      return {
+          ...pres,
+          title: "New Presentation"
+      }
+  }
+  
+  return {
+      ...pres, 
+      title: newName
+  }
+};
 
+ export const CreateSlide = (): SlideType => ({
+   id: uuid(),
+   elements: [],
+   background: "ffffff",
+ });
 
-// const CreateSlide = (): SlideType => ({
-//   id: uuidv4(),
-//   elements: [],
-//   background: "ffffff",
-// });
+  export const EditBackground = (newBackground: string, slide: SlideType) : SlideType => {
+  return {
+      ...slide,
+      background: newBackground,
+    }
+  };
 
+  export const AddObject = (newObject: ElementType, slide: SlideType) : SlideType => {
+    return {
+        ...slide,
+        elements: [...slide.elements, newObject],
+    }
+  };
 
-// const addSlide = (slideCollection: SlideCollection, newSlide: SlideType): SlideCollection => {
-//   return [...slideCollection, newSlide];
-// };
+  export const EditTextValue = (newValue: string, textObj: TextElement) : TextElement => {
+    return {
+        ...textObj,
+        text: newValue,
+    }
+  };
+
+  export const EditElementPosition = (newPosition: {x: number, y: number}, elem: ElementType) : ElementType => {
+    return {
+        ...elem,
+        pos: newPosition,
+    };
+  }
+
+  export const EditElementSize = (newSize: {width: number, height: number} , elem: ElementType) : ElementType => {
+    return {
+         ...elem,
+        size: newSize,
+    };
+};
+
+  export const addSlide = (slideCollection: SlideType[], newSlide: SlideType): SlideType[] => {
+    return [...slideCollection, newSlide];
+  };
 
 // const removeSlide = (slideCollection: SlideCollection, slideId: string): SlideCollection => {
 //   return slideCollection.filter((slide) => slide.id !== slideId);
